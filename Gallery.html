@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>Gallery</title>
+  </head>
+  <body>
+    <header class="topnav">
+      <div id="navbar-brand">
+        <a href="#">MyClothes</a>
+      </div>
+
+      <nav>
+        <ul id="myLinks">
+          <li><a href="Index.html">Home</a></li>
+          <li class="active"><a href="Gallery.html">Gallery</a></li>
+          <li><a href="About.html">About</a></li>
+        </ul>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+          <i class="fa fa-bars"></i>
+        </a>
+      </nav>
+    </header>
+
+    <div class="sort">
+      <div class="tooltip selected" id="defaultSort">
+        Default <span class="tooltiptext">default sorting</span>
+      </div>
+      <div class="tooltip" id="priceSort">
+        Price <span class="tooltiptext">from lowest price to highest</span>
+      </div>
+      <div class="tooltip" id="ratingSort">
+        Rating <span class="tooltiptext">from highest rating to lowest</span>
+      </div>
+    </div>
+
+    <div class="flex_container">
+      <img class="image All White" value="0" src="Data/1.jpeg" alt="Image 1" />
+      <img class="image All Yellow" value="1" src="Data/2.jpeg" alt="Image 2" />
+      <img class="image All White" value="2" src="Data/3.jpeg" alt="Image 3" />
+      <img class="image All Black" value="3" src="Data/4.jpeg" alt="Image 4" />
+      <img class="image All Black" value="4" src="Data/5.jpeg" alt="Image 5" />
+      <img class="image All Green" value="5" src="Data/6.jpeg" alt="Image 6" />
+      <img class="image All White" value="6" src="Data/7.jpeg" alt="Image 7" />
+      <img class="image All Blue" value="7" src="Data/8.webp" alt="Image 8" />
+      <img class="image All Yellow" value="8" src="Data/9.jpeg" alt="Image 9" />
+    </div>
+
+    <div class="details hide">
+      <div>
+        <p>COLOR: &nbsp</p>
+        <p id="color">white</p>
+      </div>
+      <div>
+        <p>PRICE: &nbsp</p>
+        <p id="price">50$</p>
+      </div>
+      <div>
+        <p>SIZE: &nbsp</p>
+        <p id="size">XL</p>
+      </div>
+      <div>
+        <p>RATING: &nbsp</p>
+        <p id="rating">4.5/5</p>
+      </div>
+    </div>
+
+    <script>
+      data = [
+        ["white", "50$", "XL", "4.5/5", 50, 4.5],
+        ["yellow", "45$", "S", "4.6/5", 45, 4.6],
+        ["white", "30$", "M", "4/5", 30, 4],
+        ["black", "35$", "L", "4.1/5", 35, 4.1],
+        ["black", "40$", "XL", "4.2/5", 40, 4.2],
+        ["green", "50$", "S", "4.5/5", 50, 4.5],
+        ["white", "45$", "M", "4.3/5", 45, 4.3],
+        ["blue", "70$", "L", "4.4/5", 70, 4.4],
+        ["yellow", "40$", "M", "4.3/5", 40, 4.3],
+      ];
+
+      $(".sort div").click(function () {
+        console.log("eren");
+        $(".sort div").removeClass("selected");
+        $(this).addClass("selected");
+      });
+
+      $(".flex_container").on("click", ".image", function () {
+        console.log("sa");
+        var a = $(this).attr("value");
+        $("#color").text("");
+        $("#price").text("");
+        $("#size").text("");
+        $("#rating").text("");
+        $("#color").text(data[a][0]);
+        $("#price").text(data[a][1]);
+        $("#size").text(data[a][2]);
+        $("#rating").text(data[a][3]);
+
+        $(".image").removeClass("selectedimage");
+        $(".image").show();
+        $(this).addClass("selectedimage");
+        $(".selectedimage").hide();
+        $(".selectedimage").before($(".details"));
+        $(".details").removeClass("hide");
+      });
+
+      $(".details").click(function () {
+        $(".image").removeClass("selectedimage");
+        $(".image").show();
+        $(".details").addClass("hide");
+      });
+
+      $("#priceSort").click(function () {
+        $(".image").removeClass("selectedimage");
+        $(".image").show();
+        $(".details").addClass("hide");
+        var img = $(".image");
+        var list = [];
+
+        img.sort((a, b) => {
+          var d = a.getAttribute("value");
+          var c = b.getAttribute("value");
+
+          if (data[d][4] - data[c][4] > 0) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+        $(".image").remove();
+        $(".flex_container").append(img);
+      });
+
+      $("#ratingSort").click(function () {
+        $(".image").removeClass("selectedimage");
+        $(".image").show();
+        $(".details").addClass("hide");
+        var img = $(".image");
+        var list = [];
+
+        img.sort((a, b) => {
+          var d = a.getAttribute("value");
+          var c = b.getAttribute("value");
+
+          if (data[d][5] - data[c][5] > 0) {
+            return -1;
+          } else {
+            return 1;
+          }
+        });
+        $(".image").remove();
+        $(".flex_container").append(img);
+      });
+
+      $("#defaultSort").click(function () {
+        $(".image").removeClass("selectedimage");
+        $(".image").show();
+        $(".details").addClass("hide");
+        var img = $(".image");
+        var list = [];
+
+        img.sort((a, b) => {
+          var d = a.getAttribute("value");
+          var c = b.getAttribute("value");
+
+          if (d - c > 0) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+        $(".image").remove();
+        $(".flex_container").append(img);
+      });
+
+      function myFunction() {
+        var x = document.getElementById("myLinks");
+        if (x.style.display === "block") {
+          x.style.display = "none";
+        } else {
+          x.style.display = "block";
+        }
+      }
+    </script>
+  </body>
+</html>
